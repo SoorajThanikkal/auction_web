@@ -379,3 +379,4 @@ def MyOrdersView(request):
             return render(request, 'myorder.html', {'orders': []})
     return redirect('buyer_login')  # Adjust the URL name for your buyer login
             
+print("hello")
