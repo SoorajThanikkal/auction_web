@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Auctix - Online Auction</title>
+
+    <!-- Add this link to include the Font Awesome stylesheet -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+	<link rel="icon" href="{% static 'img/baricon.png' %}" type="image/png">
+  <link rel="stylesheet" href="{% static 'vendors/bootstrap/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'vendors/fontawesome/css/all.min.css' %}">
+	<link rel="stylesheet" href="{% static 'vendors/themify-icons/themify-icons.css' %}">
+  <link rel="stylesheet" href="{% static 'vendors/nice-select/nice-select.css' %}">
+  <link rel="stylesheet" href="{% static 'vendors/owl-carousel/owl.theme.default.min.css' %}">
+  <link rel="stylesheet" href="{% static 'vendors/owl-carousel/owl.carousel.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+	<!-- Detailed registration -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+	<script src="{% static 'js/script.js' %}"></script>
+
+</head>
+<body>
+  <!--================ Start Header Menu Area =================-->
+	<header class="header_area">
+    <div class="main_menu">
+      <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+          <a class="navbar-brand logo_h" href="/buyer/index/"><img src="{% static 'img/auctix.png' %}" alt=""></a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+            <ul class="nav navbar-nav menu_nav ml-auto mr-auto">
+              <li class="nav-item active"><a class="nav-link" href="index">Home</a></li>
+              <li class="nav-item submenu dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                  aria-expanded="false">Shop</a>
+                <ul class="dropdown-menu">
+                  <li class="nav-item"><a class="nav-link" href="category">Shop Category</a></li>
+                  <li class="nav-item"><a class="nav-link" href="listproduct/">Product View</a></li>
+                  <li class="nav-item"><a class="nav-link" href="checkout">Product Checkout</a></li>
+                  <li class="nav-item"><a class="nav-link" href="confirmation">Confirmation</a></li>
+                  <li class="nav-item"><a class="nav-link" href="cart">Shopping Cart</a></li>
+                  <li class="nav-item"><a class="nav-link" href="listuser">Show User List</a></li>
+                  
+                </ul>
+							</li>
+              <li class="nav-item submenu dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                  aria-expanded="false">Blog</a>
+                <ul class="dropdown-menu">
+                  <li class="nav-item"><a class="nav-link" href="blog">Blog</a></li>
+                  <li class="nav-item"><a class="nav-link" href="single-blog">Blog Details</a></li>
+                </ul>
+							</li>
+							<li class="nav-item submenu dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                  aria-expanded="false">Account</a>
+                <ul class="dropdown-menu">
+                  {% if username %}
+                  <li class="nav-item"><a class="nav-link" href="/buyer/buyerlogout/">Logout</a></li>
+                  <li class="nav-item"><a class="nav-link" href="/buyer/delete-actn-buyer/">Delete My Account</a></li>
+                  {% else %}
+                  <li class="nav-item"><a class="nav-link" href="/buyer/login/">Login</a></li>
+                  {% endif %}
+                  <li class="nav-item"><a class="nav-link" href="/buyer/register/">Register</a></li>
+                  <li class="nav-item"><a class="nav-link" href="/buyer/profile/">Profile</a></li>
+                  <li class="nav-item"><a class="nav-link" href="tracking-order">Tracking</a></li>
+                </ul>
+              </li>
+              <li class="nav-item"><a class="nav-link" href="contact">Contact</a></li>
+            </ul>	
+
+            <ul class="nav-shop">
+              <li class="nav-item"><a class="nav-link" href="/buyer/login/"><button><i class="ti-search"></i></button></a></li>
+              <li class="nav-item"><a class="nav-link" href="cart"><button><i class="fa-regular fa-heart"></i></i><span class="nav-shop__circle">3</span></button> </a></li>
+              <li class="nav-item"><a class="nav-link" href="/buyer/profile/"><button><i class="fa-regular fa-user"></i></button></a></li> 
+			  {% comment %} <li class="nav-item"><a class="button button-header" href="login">Sign In</a></li>{% endcomment %}
+			</ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+	<div class="product_image_area">
+		<div class="container">
+			<div class="row s_product_inner">
+				<div class="col-lg-6">
+					<div class="owl-carousel owl-theme s_Product_carousel">
+						<div class="single-prd-item">
+							<img class="img-fluid" src="{{ product.pro_image.url }}" alt="">
+						</div>
+						<div class="single-prd-item">
+							<img class="img-fluid" src="{{ product.pro_image.url }}" alt="">
+						</div>
+						<div class="single-prd-item">
+							<img class="img-fluid" src="{{ product.pro_image.url }}" alt="">
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-5 offset-lg-1">
+					<div class="s_product_text">
+						<h3>{{ product.name }}</h3>
+						<h2>{{ product.min_price }}</h2>
+						<ul class="list">
+							<li><a class="active" href="#"><span>Category</span>{{product.category}}</a></li><br>
+                            {% if  product.winner%}
+							<li><a href="#"><span>BID PRICE</span>{{product.max_price}}</a></li>
+                            <li><a href="#"><span>Current Highest Bid</span>{{product.winner}}</a></li>
+                            <div class="col-md-12 form-group">
+                                <button class="button button-register w-10">
+                                    <a href="/seller/contact/{{ product.winner.id }}" style="color: white; text-decoration: none;">Add Auction</a>
+                                </button>
+                            </div>
+                            {% else %}
+                            <div class="col-md-12 form-group">
+                                <button class="button button-register w-10">
+                                    <a href="/seller/product-list/" style="color: white; text-decoration: none;">Add Auction</a>
+                                </button>
+                            </div>
+    
+                            {% endif %}
+
+						</ul>
+						<p>{{product.description}}</p>
+		
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div><br><br>
+	<!--================End Single Product Area =================-->
+
+	<!--================Product Description Area =================-->
+	
+	<!--================End Product Description Area =================-->
+
+	<!--================ Start related Product area =================-->  
+	
+	<!--================ end related Product area =================-->  	
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+	{% endblock content %}

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #f8f9fa; /* Bootstrap background color */
+            margin: 10px 0;
+            padding: 15px;
+            border: 1px solid #dee2e6; /* Bootstrap border color */
+            border-radius: 5px;
+        }
+
+        p {
+            color: #555;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff; /* Bootstrap primary color */
+        }
+
+        .back-home {
+            margin-top: 20px;
+        }
+        img{
+          width: 200px;
+          height: 200px;
+        }
+        .pagination{
+          display: flex;
+          justify-content: center;
+          margin-top: 20px;
+          margin-bottom: 20px;
+          margin-left: 20px;
+          margin-right: 20px;
+        }
+    </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Your Cart</h2>
+
+    {% if cart_items %}
+      <ul>
+        {% for cart_item in cart_items %}
+          <li class="mb-3">
+            <p><img src="{{ cart_item.product.pro_image.url }}" alt="{{ cart_item.product.name }}" class="img-fluid"></p>
+            <p><strong>Name:</strong> {{ cart_item.product.name }}</p>
+            <p><strong>Description:</strong> {{ cart_item.product.description }}</p>
+            <p><strong>Min Price:</strong> {{ cart_item.product.min_price }}</p>
+            <p><strong>Max Price:</strong> {{ cart_item.product.max_price }}</p>
+            
+            {% if cart_item.is_closed == False %}
+              <a href="/buyer/add-auction/{{ cart_item.product.id }}" class="btn btn-success">Add Auction</a>
+            {% elif products %}
+              <p>You won this product</p>
+              <a href="/buyer/view-winner/" class="btn btn-info">Show Results</a>
+            {% else %}
+              <p>Auction Ended</p>
+              <a href="{% url 'remove-cart' id=cart_item.id %}" class="btn btn-danger">Remove from Cart</a>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+      <nav aria-label="Page navigation">
+        <ul class="pagination">
+          {% if cart_items.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ cart_items.previous_page_number }}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+          {% endif %}
+
+          {% for num in cart_items.paginator.page_range %}
+            <li class="page-item {% if num == cart_items.number %}active{% endif %}">
+              <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+            </li>
+          {% endfor %}
+
+          {% if cart_items.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ cart_items.next_page_number }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+
+    {% else %}
+      <p>Your cart is empty.</p>
+    {% endif %}
+  </div>
+
+  <div class="container back-home">
+    <a href="/buyer/index/" class="btn btn-secondary">Back to Home</a>
+  </div>
+
+  <!-- Add Bootstrap JS and Popper.js (required for Bootstrap) -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</body>
+</html>

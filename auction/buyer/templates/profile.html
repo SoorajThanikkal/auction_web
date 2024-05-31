@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Auctix - Online Auction</title>
+
+    <!-- Add this link to include the Font Awesome stylesheet -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+	<link rel="icon" href="{% static 'img/baricon.png' %}" type="image/png">
+  <link rel="stylesheet" href="{% static 'vendors/bootstrap/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'vendors/fontawesome/css/all.min.css' %}">
+	<link rel="stylesheet" href="{% static 'vendors/themify-icons/themify-icons.css' %}">
+  <link rel="stylesheet" href="{% static 'vendors/nice-select/nice-select.css' %}">
+  <link rel="stylesheet" href="{% static 'vendors/owl-carousel/owl.theme.default.min.css' %}">
+  <link rel="stylesheet" href="{% static 'vendors/owl-carousel/owl.carousel.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+	<!-- Detailed registration -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+	<script src="{% static 'js/script.js' %}"></script>
+</head>
+<body>
+  <style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f8f9fa;
+        margin: 0;
+        padding: 20px;
+    }
+
+    .col-lg-12 {
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    .login_form_inner {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h3 {
+        color: #007bff;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin-top: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    p {
+        margin: 10px 0;
+        line-height: 1.5;
+    }
+
+    a {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border-radius: 4px;
+        text-decoration: none;
+        transition: background-color 0.3s ease-in-out;
+    }
+
+    a:hover {
+        background-color: #0056b3;
+        text-decoration: none;
+    }
+</style>
+  
+
+{% if buyer %}
+<div class="col-lg-12">
+	<div class="login_form_inner register_form_inner">
+	  <!-- update_profile.html -->
+
+	  <h3>Profile Details</h3>
+	  {% if buyer_profile.profile_pic %}
+	  <img
+		src="{{ buyer_profile.profile_pic.url }}"
+		alt="Profile Picture"
+		width="150"
+	  />
+	  {% else %}
+	  <p>No profile picture available</p>
+	  {% endif %} 
+	  <p><strong>Name:</strong> {{ buyer.name }}</p>
+	  <p><strong>Email:</strong> {{ buyer.email }}</p>
+	  <p><strong>Phone:</strong> {{ buyer.phone }}</p>
+
+	 
+	{% if buyer_profile %}
+    {% if buyer_profile.address or buyer_profile.city or buyer_profile.state or buyer_profile.zipcode or buyer_profile.country %}
+        <p><strong>Address:</strong> {{ buyer_profile.address }}</p>
+        <p><strong>City:</strong> {{ buyer_profile.city }}</p>
+        <p><strong>State:</strong> {{ buyer_profile.state }}</p>
+        <p><strong>Zip Code:</strong> {{ buyer_profile.zipcode }}</p>
+        <p><strong>Country:</strong> {{ buyer_profile.country }}</p>
+    {% else %}
+        <p>No profile information available</p>
+        <a href="/buyer/addprofile-buyer/">Add Your Profile</a><br>
+    {% endif %}
+{% else %}
+    <p>No profile information available</p>
+    <a href="/buyer/addprofile-buyer/">Add Your Profile--</a><br><br>
+{% endif %}
+<a href="/buyer/edit-profile-buyer/">Update Profile</a>
+<a href="/seller/seller-index/">Back To Home</a>
+</div>
+  {% else %}
+  <section class="blog-banner-area" id="category">
+	<div class="container h-100">
+	  <div class="blog-banner">
+		<div class="text-center">
+		  <h1>Register</h1>
+		  <nav aria-label="breadcrumb" class="banner-breadcrumb">
+			<ol class="breadcrumb">
+			  <li class="breadcrumb-item"><a href="#">Home</a></li>
+			  <li class="breadcrumb-item active" aria-current="page">Register</li>
+			</ol>
+		  </nav>
+		</div>
+	  </div>
+	</div>
+  </section>
+<!--================Login Box Area =================-->
+
+<section class="login_box_area section-margin">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="login_box_img">
+          <div class="hover">
+            <h4>Already have an account?</h4>
+            <p>
+              There are advances being made in science and technology everyday,
+              and a good example of this is the
+            </p>
+            <a class="button button-account" href="/buyer/buyer-signin/">Login Now</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+<!--================End Login Box Area =================-->
+  <script src="{% static 'vendors/jquery/jquery-3.2.1.min.js' %}"></script>
+  <script src="{% static 'vendors/bootstrap/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'vendors/skrollr.min.js' %}"></script>
+  <script src="{% static 'vendors/owl-carousel/owl.carousel.min.js' %}"></script>
+  <script src="{% static 'vendors/nice-select/jquery.nice-select.min.js' %}"></script>
+  <script src="{% static 'vendors/jquery.ajaxchimp.min.js' %}"></script>
+  <script src="{% static 'vendors/mail-script.js' %}"></script>
+  <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

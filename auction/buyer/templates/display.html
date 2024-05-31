@@ -1,0 +1,151 @@
+{% load static %}
+<!DOCTYPE html>
+<html style="font-size: 16px;" lang="en">
+    <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="Tech Specs">
+    <meta name="description" content="">
+    <title>Auction</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'css/nicepage.css' %}" media="screen">
+    <link rel="stylesheet" href="{% static 'css/Home.css' %}" media="screen">
+    <script class="u-script" type="text/javascript" src="{% static 'jquery.js' %}" defer=""></script>
+    <script class="u-script" type="text/javascript" src="{% static 'nicepage.js' %}" defer=""></script>
+    <meta name="generator" content="Nicepage 6.5.3, nicepage.com">
+    <link id="u-theme-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i">
+    <link id="u-page-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:100,200,300,400,500,600,700,800,900">
+    
+    
+    
+    <script type="application/ld+json">{
+		"@context": "http://schema.org",
+		"@type": "Organization",
+		"name": ""
+}</script>
+    <meta name="theme-color" content="#478ac9">
+    <meta property="og:title" content="Home">
+    <meta property="og:type" content="website">
+  <meta data-intl-tel-input-cdn-path="intlTelInput/">
+</head>
+<style>
+  .messages {
+    transition: 3s ease-in-out
+  }
+
+  .hidden {
+    display: none;
+
+
+  }
+  .pagination{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  #back{
+    display: flex;
+    justify-content: center;
+  }
+  .badge{
+    display: flex;
+    justify-content: center;
+  }
+  #back:hover{
+    color:red;
+  }
+</style>
+
+  <body data-home-page="Home.html" data-home-page-title="Home" data-path-to-root="./" data-include-products="false" class="u-body u-xl-mode" data-lang="en">
+    <h2  style="text-align: center;" class="u-custom-font u-font-roboto-slab u-text u-text-1">Product For Auction</h2>
+    {% if messages %}
+    <ul class="messages">
+      <div class="alert alert-danger" role="alert">
+      {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+      {% endfor %}
+    </div>
+    </ul>
+  {% endif %}
+
+    {% for item in ur %}
+    <section class="u-clearfix u-custom-color-1 u-section-1" id="carousel_6ea8">
+      <div class="u-clearfix u-sheet u-sheet-1">
+        <div class="data-layout-selected u-clearfix u-expanded-width u-layout-wrap u-layout-wrap-1">
+          <div class="u-layout">
+            <div class="u-layout-row">
+              <div class="u-container-style u-layout-cell u-left-cell u-size-30 u-layout-cell-1">
+                <div class="u-container-layout">
+                  <img class="u-expanded-width-xs u-image u-image-1" src="{{item.pro_image.url}}">
+                </div>
+              </div>
+              <div class="u-container-style u-layout-cell u-size-30 u-layout-cell-2">
+                <div class="u-container-layout">
+                  <h2 class="u-custom-font u-font-roboto-slab u-text u-text-1">{{item.name}}</h2>
+                  <h5 class="u-text u-text-custom-color-2 u-text-2">Product Information</h5>
+                  <ul class="u-spacing-16 u-text u-text-3">
+                    <li>{{item.min_price}}</li>
+                    <li>{{item.category}}</li>
+                    {%if item.winner == None and item.max_price == None %}
+                    <p class="alert alert-info">Auction available</p>
+                    {%else%}
+                    <li>{{item.winner}}</li>
+                    <li>{{item.max_price}}</li>
+                    {%endif%}
+                  </ul><br>
+                  <a href="http://wa.me/{{item.seller.phone}}"><i class="fa-brands fa-whatsapp"></i>  Contact Seller</a>
+                  {% if item.is_closed == False %}
+                  <button class="btn btn-success" ><i class="fa-solid fa-cart-shopping"></i><a style="color: white;" href="/buyer/add-auction/{{item.id}}">Add Auction</a></button>
+                  <a href="/buyer/add-to-cart/{{item.id}}"> <i class="fa-solid fa-cart-arrow-down"></i> Add to Cart</a>
+                  {% else %}
+                  <p class="alert alert-danger">Auction is closed </p>
+                  <a href="/buyer/add-to-cart/{{item.id}}"> <i class="fa-solid fa-cart-arrow-down"></i> Add to Cart</a>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    {% endfor %}
+    {% if ur.has_other_pages %}
+  <ul class="pagination">
+    {% if ur.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page=1">&laquo; first</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="?page={{ ur.previous_page_number }}">previous</a>
+      </li>
+    {% endif %}
+
+    {% for num in ur.paginator.page_range %}
+      <li class="page-item{% if ur.number == num %} active{% endif %}">
+        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+      </li>
+    {% endfor %}
+
+    {% if ur.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ ur.next_page_number }}">next</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="?page={{ ur.paginator.num_pages }}">last &raquo;</a>
+      </li>
+    {% endif %}
+  </ul>
+{% endif %}
+<span class="badge badge-primary"><a id="back"  href="/buyer/index/">Back To Home</a></span>
+    
+</body>
+<script>
+  // Add script to hide messages after 1 second
+  setTimeout(function() {
+    document.querySelector('.messages').classList.add('hidden');
+  }, 2000);
+</script>
+</html>

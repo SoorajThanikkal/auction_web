@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Auctix - Online Auction</title>
+
+    <!-- Add this link to include the Font Awesome stylesheet -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+	<link rel="icon" href="{% static 'img/baricon.png' %}" type="image/png">
+  <link rel="stylesheet" href="{% static 'vendors/bootstrap/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'vendors/fontawesome/css/all.min.css' %}">
+	<link rel="stylesheet" href="{% static 'vendors/themify-icons/themify-icons.css' %}">
+  <link rel="stylesheet" href="{% static 'vendors/nice-select/nice-select.css' %}">
+  <link rel="stylesheet" href="{% static 'vendors/owl-carousel/owl.theme.default.min.css' %}">
+  <link rel="stylesheet" href="{% static 'vendors/owl-carousel/owl.carousel.min.css' %}">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY4Nl/6Z1PLFSqU8ff/3ElL+P5nXLi1G5FfNQT" crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+	<!-- Detailed registration -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+	<script src="{% static 'js/script.js' %}"></script>
+
+</head>
+<body>
+  <!--================ Start Header Menu Area =================-->
+	<header class="header_area">
+    <div class="main_menu">
+      <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+          <a class="navbar-brand logo_h" href="/buyer/index/"><img src="{% static 'img/auctix.png' %}" alt=""></a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+            <ul class="nav navbar-nav menu_nav ml-auto mr-auto">
+              <li class="nav-item active"><a class="nav-link" href="buyer/index/">Home</a></li>
+              <li class="nav-item submenu dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                  aria-expanded="false">Auctions</a>
+                <ul class="dropdown-menu">
+                  <li class="nav-item"><a class="nav-link" href="/buyer/display-products/">Display Products</a></li>  
+                </ul>
+							</li>
+							<li class="nav-item submenu dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                  aria-expanded="false">Account</a>
+                <ul class="dropdown-menu">
+                  {% if username %}
+                  <li class="nav-item"><a class="nav-link" href="/buyer/buyerlogout/">Logout</a></li>
+                  <li class="nav-item"><a class="nav-link" href="/buyer/delete-actn-buyer/">Delete My Account</a></li>
+                  {% else %}
+                  <li class="nav-item"><a class="nav-link" href="/buyer/buyer-signin/">Login</a></li>
+                  {% endif %}
+                  <li class="nav-item"><a class="nav-link" href="/buyer/register/">Register</a></li>
+                  <li class="nav-item"><a class="nav-link" href="/buyer/profile/">Profile</a></li>
+                  <li class="nav-item"><a class="nav-link" href="/buyer/edit-profile-buyer/">Edit Profile</a></li>
+                </ul>
+              </li>
+              <li class="nav-item"><a class="nav-link" href="/buyer/dispaly-cart/">My Cart</a></li>
+              {% if pr|length > 0 %}
+              {% if pr.0.winner == br %}
+                  <li class="nav-item">
+                      <a class="nav-link" href="/buyer/view-winner/">
+                          View Results 
+                          <span class="badge badge-danger wins-count">
+                              <i class="fas fa-trophy"></i>
+                              {{ wins_count }}
+                          </span>
+                      </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/buyer/my-order/">View Order</a>
+                </li>
+              {% else %}
+                  <li class="nav-item">
+                      <a class="nav-link" href="/buyer/view-winner/">View Results</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/buyer/my-order/">View Order</a>
+                </li>
+              {% endif %}
+          {% endif %}
+
+            </ul>	
+
+            <ul class="nav-shop">
+              {% if username %}
+              <li class="nav-item"><a class="nav-link" href="/buyer/buyerlogout/"><button><i class="fa-solid fa-right-from-bracket"></i></button></a></li>
+              <li class="nav-item"><a class="nav-link" href="/buyer/profile/"><button><i class="fa-regular fa-user"></i></button></a></li> 
+              {% else %}
+              <li class="nav-item"><a class="nav-link" href="/buyer/buyer-signin/"><button><i class="fa-solid fa-right-to-bracket"></i></button></a></li>
+              {% endif %}
+			</ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- <style>
+    .search-container {
+    text-align: center;
+    margin: 20px;
+}
+
+.search-input {
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px; /* Curved edges */
+    outline: none;
+}
+
+.search-input:focus {
+    border-color: blue; /* Blue border when selected */
+}
+
+.search-button {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px; /* Curved edges */
+    background-color: white;
+    cursor: pointer;
+}
+
+.search-button:hover {
+    background-color: #f0f0f0;
+}
+
+  </style>
+
+<div class="search-container">
+  <form action="#/" method="post">
+      <input type="text" placeholder="Search..." name="q" class="search-input">
+      <button type="submit" class="search-button">Search</button>
+  </form>
+</div> -->
+
+
+  <main class="site-main">
+    
+    <!--================ Hero banner start =================-->
+    <section class="hero-banner">
+      <div class="container">
+        <div class="row no-gutters align-items-center pt-60px">
+          <div class="col-5 d-none d-sm-block">
+            <div class="hero-banner__img">
+              <img class="img-fluid" src="{% static 'img/home/hero-banner.png' %}" alt="">
+            </div>
+          </div>
+          <div class="col-sm-7 col-lg-6 offset-lg-1 pl-4 pl-md-5 pl-lg-0">
+            <div class="hero-banner__content">
+              <h4>Shop is fun</h4>
+              <h1>Welcome..{{username}}</h1>
+              
+              <a class="button button-hero" href="#">Browse Now</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--================ Hero banner start =================-->
+    
+    
+  
+    <!--================ Hero Carousel start =================-->
+    <section class="section-margin mt-0">
+      <div class="owl-carousel owl-theme hero-carousel">
+        <div class="hero-carousel__slide">
+          <img src="{% static 'img/home/hero-slide1.png' %}" alt="" class="img-fluid">
+          <a href="#" class="hero-carousel__slideOverlay">
+            <h3>Wireless Headphone</h3>
+            <p>Accessories Item</p>
+          </a>
+        </div>
+        <div class="hero-carousel__slide">
+          <img src="{% static 'img/home/hero-slide2.png' %}" alt="" class="img-fluid">
+          <a href="#" class="hero-carousel__slideOverlay">
+            <h3>Wireless Headphone</h3>
+            <p>Accessories Item</p>
+          </a>
+        </div>
+        <div class="hero-carousel__slide">
+          <img src="{% static 'img/home/hero-slide3.png' %}" alt="" class="img-fluid">
+          <a href="#" class="hero-carousel__slideOverlay">
+            <h3>Wireless Headphone</h3>
+            <p>Accessories Item</p>
+          </a>
+        </div>
+      </div>
+    </section>
+    <!--================ Hero Carousel end =================-->
+
+    <!-- ================ trending product section start ================= -->  
+    <section class="section-margin calc-60px">
+      <div class="container">
+        <div class="section-intro pb-60px">
+          <p>New Item in the market</p>
+          <h2>Products For <span class="section-intro__style"> Auction</span></h2>
+        </div>
+        <div class="row">
+          {% for item in pr %}
+          <div class="col-md-6 col-lg-4 col-xl-3">
+            <div class="card text-center card-product">
+              <div class="card-product__img">
+                <img class="card-img" src="{{ item.pro_image.url }}" alt=""  width="200px" height="200px">
+                <ul class="card-product__imgOverlay">
+                  <li>
+                    {% if item.is_closed == False %}
+                    <a href="/buyer/add-auction/{{item.id}}/">
+                      <button><i class="ti-shopping-cart"></i></button>
+                    </a>
+                    {% else %}
+                    <p>Auction Ended</p>
+                    {% endif %}
+                  </li>
+                </ul>
+              </div>
+              <div class="card-body">
+                <p>{{item.category}}</p>
+                <h4 class="card-product__title">{{item.name}}</a></h4>
+                <p class="card-product__price">Actual Price :{{item.min_price}}</p>
+                {% if item.max_price %}
+                <p class="card-product__price">Bid Price :{{item.max_price}}</p>
+                {% else %}
+                <p class="card-product__title">No Auction For this Product</p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+    <!-- ================ trending product section end ================= -->  
+
+
+    <!-- ================ offer section start ================= --> 
+    <section class="offer" id="parallax-1" data-anchor-target="#parallax-1" data-300-top="background-position: 20px 30px" data-top-bottom="background-position: 0 20px">
+      <div class="container">
+        <div class="row">
+          <div class="col-xl-5">
+            <div class="offer__content text-center">
+              <h3>Awsome Products Are Here</h3>
+              <p>Products with Good Quality</p>
+              <a class="button button--active mt-3 mt-xl-4" href="/buyer/display-products/">Shop Now</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- ================ offer section end ================= --> 
+
+    <!-- ================ Best Selling item  carousel ================= --> 
+    <!-- ================ Best Selling item  carousel end ================= --> 
+
+    <!-- ================ Blog section start ================= -->  
+    
+    <!-- ================ Blog section end ================= -->  
+  </main>
+  </body>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<!-- Add this script to update the wins count -->
+<script>
+$(document).ready(function() {
+    // Fetch wins count when the page loads
+    updateWinsCount();
+
+    function updateWinsCount() {
+      console.log('Updating wins count...');
+        $.ajax({
+            url: '/buyer/wins-count/',
+            type: 'GET',
+            success: function(data) {
+                // Update the wins count in the navigation link
+                $('.wins-count').text(data.wins_count);
+                console.log(data.wins_count);
+            },
+            error: function(error) {
+                console.error('Failed to fetch wins count:', error);
+            }
+        });
+    }
+
+    // Optionally, you can set a timer to update the count periodically
+    setInterval(updateWinsCount, 60000); // Update every 1 minute (adjust as needed)
+});
+</script>
+</html>

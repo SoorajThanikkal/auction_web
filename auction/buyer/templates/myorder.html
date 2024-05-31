@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders</title>
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Add your stylesheets or other head elements here -->
+
+    <style>
+        /* Add your custom styles here */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #28a745; /* Bootstrap success color */
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 20px;
+        }
+
+        .status-slider {
+            width: 10%;
+        }
+    </style>
+</head>
+<body>
+
+{% if orders %}
+    <div class="container">
+        <h1>Your Orders</h1>
+        <ul class="list-unstyled">
+            {% for order in orders %}
+                <li>
+                    <strong>Order ID:</strong> {{ order.product.id }}<br>
+                    <strong>Product:</strong> {{ order.product.product.name }}<br>
+                    <strong>Amount:</strong> {{ order.product.amount }}<br>
+                    <strong>Status:</strong>
+                    <input type="range" class="custom-range status-slider" min="0" max="2" value="{% if order.orderstatus == 'Pending' %}0{% elif order.orderstatus == 'Shipped' %}1{% elif order.orderstatus == 'Delivered' %}2{% endif %}" disabled>
+                    <span class="badge badge-success">{{ order.orderstatus }}</span><br>
+                    <!-- Add other fields as needed -->
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% else %}
+    <p class="text-muted">You have no orders yet.</p>
+{% endif %}
+
+<!-- Add Bootstrap JS and Popper.js (required for Bootstrap) -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<!-- Add your scripts or other body elements here -->
+
+</body>
+</html>

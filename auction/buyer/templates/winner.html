@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Winner's View</title>
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Add Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY4Nl/6Z1PLFSqU8ff/3ElL+P5nXLi1G5FfNQT" crossorigin="anonymous">
+    <style>
+        /* Add your custom styles here */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+        }
+
+        h2 {
+            color: #28a745; /* Bootstrap success color */
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        a.btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff; /* Bootstrap primary color */
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+{% if products %}
+  <h2>Congratulations {{ products.0.winner.name }} <i class="fas fa-trophy"></i></h2>
+  <ul>
+    {% for product in products %}
+      <li><strong>Name:</strong> {{ product.name }}</li>
+      <li><strong>Description:</strong> {{ product.description }}</li>
+      <li><strong>Category:</strong> {{ product.category }}</li>
+      <li><strong>Max Price:</strong> {{ product.max_price }}</li>
+      <li><strong>Seller Name:</strong> {{ product.seller.name }}</li>
+      {% if product.is_paid == True %}
+      <div class="alert alert-success" role="alert">
+        The is product is purchased successfully
+      </div>
+      
+      {% else %}
+      <li>
+        <button onclick="initiatePayment('{{ product.id }}')" class="btn btn-primary">Proceed to Payment <i class="fas fa-arrow-right"></i></button>
+      </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No products won yet.</p>
+{% endif %}
+
+<!-- Add Bootstrap JS and Popper.js (required for Bootstrap) -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<!-- Add Font Awesome JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" integrity="sha384-mQQwQ4au5STKs4E7uBtN6uy9nb+zr+Y5tcyOhZU5E8EJL8igkF5bm/4L2z+5t3Q" crossorigin="anonymous"></script>
+<!-- Add Razorpay JS -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+  function initiatePayment(productId) {
+    // Make an AJAX request to your Django backend to fetch the payment details
+    // For simplicity, you can use Django template tags to get the necessary data
+
+    // Replace this with your actual URL and parameters
+    var paymentUrl = `/buyer/initiate-payment/${productId}/`;
+
+    // Make an AJAX request to get payment details
+    fetch(paymentUrl, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest', // Add this header to identify AJAX requests
+      },
+    })
+      .then(response => response.json())
+      .then(data => {
+        // Initialize Razorpay
+        var options = {
+          key: '{{ settings.RAZOR_KEY_ID }}', // Replace with your Razorpay Key
+          amount: data.amount, // Amount in paise
+          currency: 'INR',
+          order_id: data.order_id,
+          name: 'Auction Web',
+          description: 'Payment for Product',
+          handler: function (response) {
+            // Make an AJAX request to confirm the payment on your server
+            confirmPayment(response.razorpay_payment_id, data.order_id);
+          },
+          prefill: {
+            name: '{{ products.0.winner.name }}',
+            email: '{{ products.0.winner.email }}',
+          },
+          notes: {
+            product_id: productId,
+          },
+        };
+
+        var rzp = new Razorpay(options);
+        console.log(options);
+        rzp.open();
+      })
+      .catch(error => console.error('Error:', error));
+  }
+
+  function confirmPayment(paymentId, orderId) {
+    // Make an AJAX request to your Django backend to confirm the payment
+    // Replace this with your actual URL and parameters
+    var confirmPaymentUrl = `/buyer/confirm-payment/${orderId}/${paymentId}/`;
+
+    // Make an AJAX request to confirm the payment
+    fetch(confirmPaymentUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest', // Add this header to identify AJAX requests
+      },
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'success') {
+          // Payment successful, you can redirect or show a success message
+          alert('Payment successful');
+        } else {
+          // Payment failed, handle accordingly
+          alert('Payment failed');
+        }
+      })
+      .catch(error => console.error('Error:', error));
+  }
+</script>
+
+</body>
+</html>
