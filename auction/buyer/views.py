@@ -380,3 +380,4 @@ def MyOrdersView(request):
     return redirect('buyer_login')  # Adjust the URL name for your buyer login
             
 print("hello")
+print("world")
